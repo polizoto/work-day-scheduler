@@ -23,11 +23,13 @@ textarea{
 
 .description{
   white-space: pre-wrap;
+  border-top: 1px solid;
 }
 
 .time-block{
-  text-align: center;
-  border-radius: 15px;
+  /* text-align: center; */
+  text-align: right;
+  /* border-radius: 15px; */
 }
 
 .row {
@@ -63,6 +65,7 @@ textarea{
   border-bottom-right-radius: 15px;
   background-color: #06AED5;
   color: white;
+  border-top: 1px solid;
 }
 
 .saveBtn i:hover {
@@ -70,6 +73,31 @@ textarea{
   transition: all .3s ease-in-out;
 }
 
-.fa{
-  opacity: 0.75;                /* Opacity (Transparency) */
+/* New CSS */
+
+button {
+  border: none;
+  background-color: #06AED5;
+  color: white;   
 }
+
+/* .row {
+  border-top: 1px solid;
+} */
+
+.time-block {
+  border-top: 1px solid;
+  /* border-right: 2px solid;
+  border-color: gray; */
+}
+
+/* .note {
+  border-top: 1px solid;
+  border-color: gray;
+}
+
+.save {
+  border-top: 1px solid;
+  border-left: 2px solid;
+  border-color: gray;
+} */
