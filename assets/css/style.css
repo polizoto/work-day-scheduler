@@ -34,7 +34,7 @@ textarea{
 
 .row {
   white-space: pre-wrap;
-  height: 80px;
+  /* height: 80px; */
   border-top: 1px solid white;;
 }
 
@@ -81,23 +81,34 @@ button {
   color: white;   
 }
 
-/* .row {
-  border-top: 1px solid;
-} */
-
 .time-block {
   border-top: 1px solid;
-  /* border-right: 2px solid;
-  border-color: gray; */
 }
 
-/* .note {
-  border-top: 1px solid;
-  border-color: gray;
-}
+@media screen and (max-width: 768px) {
+  .row {
+    margin: 15px 0px;
+  }
 
-.save {
-  border-top: 1px solid;
-  border-left: 2px solid;
-  border-color: gray;
-} */
+  .time-block, .description, .saveBtn {
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+  }
+
+  .description {
+    min-height: 70px;
+    border-top: none;
+  }
+
+  .time-block {
+    padding: 500px;
+  }
+
+  .saveBtn {
+    margin-top: 5px;
+    border-left: none;
+    border-radius: 15px;
+  }
+
+}
