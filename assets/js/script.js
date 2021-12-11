@@ -24,17 +24,14 @@ var getEvents = function() {
     if (!events) {
       events = {
         day: [date],
-        action: ["", "", "", "", "", "", "", "", "", "", ""],
+        action: ["", "", "", "", "", "", "", "", "", ""],
       };
     }
-    // console.log(events);
 }
 
 var getArrayIndex = function(timeblock) {
     timeInt = parseInt(timeblock)
-    if (timeInt === 8) {
-        return arrayIndex = 0;
-    }
+    return arrayIndex = (timeInt - 8);
   };
 
 
@@ -42,11 +39,10 @@ var saveEvents = function() {
     localStorage.setItem("events", JSON.stringify(events));
   };
 
-var addEvents = function() {
 var eventIndex = 0;
 for (var i = 8; i < 18; i++) {
-    // console.log(events.action[eventIndex]);
-    var note = events.action[eventIndex].text
+    getEvents();
+    var note = events.action[eventIndex]
     var newRow = $("<div>")
     .attr('id', 'timeblock_' + i)
     .addClass("row")
@@ -76,11 +72,10 @@ for (var i = 8; i < 18; i++) {
     $("#container").append(newRow);
     eventIndex++
 }
-}
+
 
 // Edit task function
 $(".description").on("click", "p", function() {
-    console.log("Hello World");
     var text = $(this).text().trim();;
     var textInput = $("<textarea>")
     .addClass("form-control")
@@ -94,13 +89,13 @@ $(".description").on("click", "p", function() {
     var text = $(this)
       .val()
       .trim();
-  // get the parent ul's id attribute
+  // get the parent row's id attribute
     var index = $(this)
     .closest(".row")
     .attr("id")
     .replace("timeblock_", "");
     var arrayIndex = getArrayIndex(index); 
-    events.action[arrayIndex] = text;
+    events.action[arrayIndex] = text
     saveEvents();
     var noteP = $("<p>")
       .addClass("note")
@@ -111,5 +106,3 @@ $(".description").on("click", "p", function() {
     });
 
 $("#currentDay").text(date)
-getEvents();
-addEvents();
