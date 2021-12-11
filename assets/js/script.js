@@ -29,6 +29,7 @@ for (var i = 8; i < 18; i++) {
     var newEventBlock = $("<div>")
     .addClass("description col-sm-12 col-md-6 col-lg-10 bg-light p-2 d-flex")
     var eventBlock = $("<p>")
+    .addClass("note")
     newEventBlock.append(eventBlock)
     var newSaveBlock = $("<div>")
     .addClass("p-4 saveBtn col-sm-12 col-md-3 col-lg-1 d-flex justify-content-center")
@@ -42,5 +43,18 @@ for (var i = 8; i < 18; i++) {
     newRow.append(newTimeBlock, newEventBlock, newSaveBlock)
     $("#container").append(newRow);
 }
+
+
+// Edit task function
+$(".description").on("click", "p", function() {
+    console.log("Hello World");
+    var text = $(this).text().trim();;
+    var textInput = $("<textarea>")
+    .addClass("form-control")
+    .val(text);
+    $(this).replaceWith(textInput);
+    textInput.trigger("focus");
+    
+  });
 
 $("#currentDay").text(date)
