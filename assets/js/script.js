@@ -1,21 +1,7 @@
 var events = {};
 var date = moment().format('dddd, MMMM Do');
 var currentTime = moment().format("HH:mm A")
-var result8 = '08:00 AM'
-var result10 = '05:00 PM'
 var time = moment(currentTime, "HH:mm A")
-var newTime = moment(result8, "HH:mm A")
-var newTime2 = moment(result10, "HH:mm A")
-var newTime3 = moment().set("hour", 8)
-
-// if (moment(newTime2).isAfter(moment(time))) {
-//     console.log(newTime2 + " is after " + time);
-// }
-// else {
-//     console.log(newTime2 + " is earlier than " + time);
-// }
-// console.log(newTime.format("H A"));
-// console.log(newTime3.format("H A"));
 
 var getEvents = function() {
     events = JSON.parse(localStorage.getItem("events"));
@@ -52,14 +38,15 @@ for (var i = 8; i < 18; i++) {
     var timeBlock = $("<p>")
     .attr('id', i + ":00")
     .text(getTime)
-    .addClass("time");
+    .addClass("time")
     newTimeBlock.append(timeBlock)
     var newEventBlock = $("<div>")
     .addClass("description col-sm-12 col-md-6 col-lg-10 bg-light p-2 d-flex")
     var eventBlock = $("<p>")
     .attr('id', 'note_' + i)
     .addClass("note")
-    .text(note);
+    .text(note)
+    .attr('tabindex', "0");
     newEventBlock.append(eventBlock)
     var newSaveBlock = $("<div>")
     .addClass("p-4 saveBtn col-sm-12 col-md-3 col-lg-1 d-flex justify-content-center")
@@ -77,7 +64,7 @@ for (var i = 8; i < 18; i++) {
 
 
 // Edit task function
-$(".description").on("click", "p", function() {
+$(".description").on("click keypress", "p", function() {
     var text = $(this).text().trim();;
     var textInput = $("<textarea>")
     .addClass("form-control")
@@ -86,9 +73,10 @@ $(".description").on("click", "p", function() {
     textInput.trigger("focus");
   });
 
-  $(".description").on("blur", "textarea", function() {
-    // get the textarea's current value/text
-    var text = $(this)
+$(".description").on({
+    blur: function(e) {
+        if (!$(this).hasClass('keyupping')) {
+        var text = $(this)
       .val()
       .trim();
   // get the parent row's id attribute
@@ -96,16 +84,46 @@ $(".description").on("click", "p", function() {
     .closest(".row")
     .attr("id")
     .replace("timeblock_", "");
+    //   Optional
     // var arrayIndex = getArrayIndex(index); 
     // events.action[arrayIndex] = text
     // saveEvents();
     var noteP = $("<p>")
       .addClass("note")
       .attr("id", "note_" + index)
+      .attr('tabindex', "0")
       .text(text);
     // replace textarea with p element
     $(this).replaceWith(noteP);
-    });
+        }
+    },
+    keyup: function(event) {
+        $(this).addClass('keyupping');
+        if ((event.key === "Escape")) {
+        var text = $(this)
+        .val()
+        .trim();
+    // get the parent row's id attribute
+      var index = $(this)
+      .closest(".row")
+      .attr("id")
+      .replace("timeblock_", "");
+    //   Optional
+      // var arrayIndex = getArrayIndex(index); 
+      // events.action[arrayIndex] = text
+      // saveEvents();
+      var noteP = $("<p>")
+        .addClass("note")
+        .attr("id", "note_" + index)
+        .attr('tabindex', "0")
+        .text(text);
+      // replace textarea with p element
+      $(this).replaceWith(noteP);
+        }
+    $(this).removeClass('keyupping');
+    }
+}, "textarea");
+
 
     // Edit task function
 $(".saveBtn").on("click", "button", function() {
@@ -124,7 +142,6 @@ $(".saveBtn").on("click", "button", function() {
     var arrayIndex = getArrayIndex(index); 
     events.action[arrayIndex] = text
     saveEvents();
-    // console.log(events);
   });
 
 // Create function to check time slot against current time; apply CSS to display status (before, during, after current time)
@@ -142,7 +159,17 @@ if (presentTime.isBetween(moment(hour, format), moment(addHour, format))) {
     .closest(".row")
     .children().eq(1)
     .attr('class', 'description col-sm-12 col-md-6 col-lg-10 present p-2 d-flex')
-  } else if (presentTime.isAfter(moment(addHour, format))){
+  } else if (presentTime.isSame(moment(hour, format))){
+    var rowClass = $(el)
+    .closest(".row")
+    .children().eq(1)
+    .attr('class', 'description col-sm-12 col-md-6 col-lg-10 present p-2 d-flex')
+} else if (presentTime.isSame(moment(addHour, format))){
+    var rowClass = $(el)
+        .closest(".row")
+        .children().eq(1)
+        .attr('class', 'description col-sm-12 col-md-6 col-lg-10 past p-2 d-flex')
+} else if (presentTime.isAfter(moment(addHour, format))){
         var rowClass = $(el)
             .closest(".row")
             .children().eq(1)
