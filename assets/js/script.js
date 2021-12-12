@@ -14,8 +14,8 @@ if (moment(newTime2).isAfter(moment(time))) {
 else {
     console.log(newTime2 + " is earlier than " + time);
 }
-console.log(newTime.format("H A"));
-console.log(newTime3.format("H A"));
+// console.log(newTime.format("H A"));
+// console.log(newTime3.format("H A"));
 
 var getEvents = function() {
     events = JSON.parse(localStorage.getItem("events"));
@@ -50,7 +50,9 @@ for (var i = 8; i < 18; i++) {
     var newTimeBlock = $("<div>")
     .addClass("time-block col-sm-12 col-md-3 col-lg-1 p-3 d-flex")
     var timeBlock = $("<p>")
-    .text(getTime);
+    .attr('id', i + ":00")
+    .text(getTime)
+    .addClass("time");
     newTimeBlock.append(timeBlock)
     var newEventBlock = $("<div>")
     .addClass("description col-sm-12 col-md-6 col-lg-10 bg-light p-2 d-flex")
@@ -94,9 +96,9 @@ $(".description").on("click", "p", function() {
     .closest(".row")
     .attr("id")
     .replace("timeblock_", "");
-    var arrayIndex = getArrayIndex(index); 
-    events.action[arrayIndex] = text
-    saveEvents();
+    // var arrayIndex = getArrayIndex(index); 
+    // events.action[arrayIndex] = text
+    // saveEvents();
     var noteP = $("<p>")
       .addClass("note")
       .attr("id", "note_" + index)
@@ -104,5 +106,55 @@ $(".description").on("click", "p", function() {
     // replace textarea with p element
     $(this).replaceWith(noteP);
     });
+
+    // Edit task function
+$(".saveBtn").on("click", "button", function() {
+    var row = $(this)
+    .closest(".row")
+    .children().eq(1)
+    var text = $(row)
+    .children()
+    .first()
+    .text()
+    .trim()
+    var index = $(this)
+    .closest(".row")
+    .attr("id")
+    .replace("timeblock_", "");
+    var arrayIndex = getArrayIndex(index); 
+    events.action[arrayIndex] = text
+    saveEvents();
+    // console.log(events);
+  });
+
+// Create function to check time slot against current time; apply CSS to display status (before, during, after current time)
+
+var auditTime = function(el) {
+// console.log(el);
+var hour = $(el)
+.attr('id')
+var calendarTime = moment(hour, "HH:mm")
+// var presentTime = calendarTime.add(1, "hours")
+// console.log("The calendar time is: " + calendarTime + " and the present time is: " + presentTime);
+if (moment(calendarTime).isAfter(moment(time))) {
+        var rowClass = $(el)
+            .closest(".row")
+            .children().eq(1)
+            .attr('class', 'description col-sm-12 col-md-6 col-lg-10 bg-success p-2 d-flex')
+    }
+else {
+    var rowClass = $(el)
+            .closest(".row")
+            .children().eq(1)
+            .attr('class', 'description col-sm-12 col-md-6 col-lg-10 bg-danger p-2 d-flex')
+}
+}
+
+setInterval(function() {
+    $(".time").each(function(index, el) {
+        auditTime(el);
+      });
+  }, (1000 * 30));
+
 
 $("#currentDay").text(date)
