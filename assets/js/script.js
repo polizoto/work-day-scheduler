@@ -8,12 +8,12 @@ var newTime = moment(result8, "HH:mm A")
 var newTime2 = moment(result10, "HH:mm A")
 var newTime3 = moment().set("hour", 8)
 
-if (moment(newTime2).isAfter(moment(time))) {
-    console.log(newTime2 + " is after " + time);
-}
-else {
-    console.log(newTime2 + " is earlier than " + time);
-}
+// if (moment(newTime2).isAfter(moment(time))) {
+//     console.log(newTime2 + " is after " + time);
+// }
+// else {
+//     console.log(newTime2 + " is earlier than " + time);
+// }
 // console.log(newTime.format("H A"));
 // console.log(newTime3.format("H A"));
 
@@ -130,31 +130,36 @@ $(".saveBtn").on("click", "button", function() {
 // Create function to check time slot against current time; apply CSS to display status (before, during, after current time)
 
 var auditTime = function(el) {
-// console.log(el);
 var hour = $(el)
 .attr('id')
-var calendarTime = moment(hour, "HH:mm")
-// var presentTime = calendarTime.add(1, "hours")
-// console.log("The calendar time is: " + calendarTime + " and the present time is: " + presentTime);
-if (moment(calendarTime).isAfter(moment(time))) {
+var format = 'HH:mm'
+var currentHour = moment(hour, format)
+var addHour = currentHour.add(1, "hours").format("HH:mm")
+var now = moment().format(format)
+var presentTime = moment(now, format)
+if (presentTime.isBetween(moment(hour, format), moment(addHour, format))) {
+    var rowClass = $(el)
+    .closest(".row")
+    .children().eq(1)
+    .attr('class', 'description col-sm-12 col-md-6 col-lg-10 present p-2 d-flex')
+  } else if (presentTime.isAfter(moment(addHour, format))){
         var rowClass = $(el)
             .closest(".row")
             .children().eq(1)
-            .attr('class', 'description col-sm-12 col-md-6 col-lg-10 future p-2 d-flex')
-    }
-else {
-    var rowClass = $(el)
-            .closest(".row")
-            .children().eq(1)
             .attr('class', 'description col-sm-12 col-md-6 col-lg-10 past p-2 d-flex')
-}
+  } else {
+    var rowClass = $(el)
+        .closest(".row")
+        .children().eq(1)
+        .attr('class', 'description col-sm-12 col-md-6 col-lg-10 future p-2 d-flex')
+  }
 }
 
 setInterval(function() {
     $(".time").each(function(index, el) {
         auditTime(el);
       });
-  }, (1000 * 10));
+  }, 1000 );
 
 
 $("#currentDay").text(date)
