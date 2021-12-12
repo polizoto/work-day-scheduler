@@ -140,13 +140,13 @@ if (moment(calendarTime).isAfter(moment(time))) {
         var rowClass = $(el)
             .closest(".row")
             .children().eq(1)
-            .attr('class', 'description col-sm-12 col-md-6 col-lg-10 bg-success p-2 d-flex')
+            .attr('class', 'description col-sm-12 col-md-6 col-lg-10 future p-2 d-flex')
     }
 else {
     var rowClass = $(el)
             .closest(".row")
             .children().eq(1)
-            .attr('class', 'description col-sm-12 col-md-6 col-lg-10 bg-danger p-2 d-flex')
+            .attr('class', 'description col-sm-12 col-md-6 col-lg-10 past p-2 d-flex')
 }
 }
 
@@ -154,7 +154,7 @@ setInterval(function() {
     $(".time").each(function(index, el) {
         auditTime(el);
       });
-  }, (1000 * 30));
+  }, (1000 * 10));
 
 
 $("#currentDay").text(date)
