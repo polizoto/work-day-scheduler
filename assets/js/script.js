@@ -4,14 +4,24 @@ var currentTime = moment().format("HH:mm A")
 var time = moment(currentTime, "HH:mm A")
 
 var getEvents = function() {
-    events = JSON.parse(localStorage.getItem("events"));
-  
-    // if nothing in localStorage, create a new object to track all event storage arrays
-    if (!events) {
-      events = {
-        day: [date],
-        action: ["", "", "", "", "", "", "", "", "", ""],
-      };
+    // if no "events" object is in localStorage, create a new object
+    if (localStorage.getItem("events") === null) {
+        events = {
+            day: [date],
+            action: ["", "", "", "", "", "", "", "", "", ""],
+        };
+    }
+    else {
+        events = JSON.parse(localStorage.getItem("events"));
+    }
+    //    Check if the local storage contains an events object for the current day; if so, keep; if not, remove from local storage and create a new object based on current day
+    if (events.day[0] !== date) {
+        console.log("hello world");
+        localStorage.removeItem("events")
+        events = {
+            day: [date],
+            action: ["", "", "", "", "", "", "", "", "", ""],
+          };
     }
 }
 
